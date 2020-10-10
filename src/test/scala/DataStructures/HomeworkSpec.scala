@@ -20,6 +20,28 @@ class HomeworkSpec extends AnyFlatSpec with ScalaCheckDrivenPropertyChecks {
     obtained shouldEqual expected
   }
 
+  it should "sort considering more equal values" in {
+    val input =
+      Map(
+        "z" -> 4,
+        "a" -> 1,
+        "b" -> 2,
+        "c" -> 4,
+        "d" -> 1,
+        "e" -> 0,
+        "f" -> 2,
+        "g" -> 2
+      )
+    val expected = List(
+      Set("e") -> 0,
+      Set("a", "d") -> 1,
+      Set("b", "f", "g") -> 2,
+      Set("c", "z") -> 4
+    )
+    val obtained = sortConsideringEqualValues(input)
+    obtained shouldEqual expected
+  }
+
   it should "be correct on example 2" in {
     val values = Set("a1", "a2", "b1", "c1", "c2", "d1").map { x =>
       x -> x.head.toInt
@@ -31,5 +53,43 @@ class HomeworkSpec extends AnyFlatSpec with ScalaCheckDrivenPropertyChecks {
       Set("c1", "c2") -> 'c'.toInt,
       Set("d1") -> 'd'.toInt
     )
+  }
+
+  it should "be correct on example 3" in {
+    val values = Set("z1", "z2", "b1", "c1", "c2", "d1").map { x =>
+      x -> x.head.toInt
+    }.toMap
+
+    sortConsideringEqualValues(values) shouldEqual List(
+      Set("b1") -> 'b'.toInt,
+      Set("c1", "c2") -> 'c'.toInt,
+      Set("d1") -> 'd'.toInt,
+      Set("z1", "z2") -> 'z'.toInt
+    )
+  }
+
+  it should "be correct on example 4" in {
+    val input: Map[String, Int] = Map(
+      "a" -> 1,
+      "h" -> 4,
+      "j" -> 3,
+      "b" -> 2,
+      "c" -> 4,
+      "i" -> 5,
+      "d" -> 1,
+      "e" -> 0,
+      "f" -> 2,
+      "g" -> 2
+    )
+    val expected = List(
+      Set("e") -> 0,
+      Set("a", "d") -> 1,
+      Set("b", "f", "g") -> 2,
+      Set("j") -> 3,
+      Set("c", "h") -> 4,
+      Set("i") -> 5
+    )
+    val obtained = sortConsideringEqualValues(input)
+    obtained shouldEqual expected
   }
 }

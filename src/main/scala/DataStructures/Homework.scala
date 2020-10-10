@@ -16,13 +16,24 @@ object Homework extends App {
   //
   // Input `Map("a" -> 1, "b" -> 2, "c" -> 4, "d" -> 1, "e" -> 0, "f" -> 2, "g" -> 2)` should result in
   // output `List(Set("e") -> 0, Set("a", "d") -> 1, Set("b", "f", "g") -> 2, Set("c") -> 4)`.
+
+  // Fixed old version
+  // def sortConsideringEqualValues[T](map: Map[T, Int]): List[(Set[T], Int)] = {
+  //   List(
+  //     map
+  //       .groupMap(_._2)(_._1)
+  //       .map(_.swap)
+  //       .map({ case (k, v) => (Set(k.toSeq: _*).to(Set), v) })
+  //       .toSeq: _*
+  //   ).sorted((a: (Set[T], Int), b: (Set[T], Int)) => a._2 - b._2)
+  // }
+
   def sortConsideringEqualValues[T](map: Map[T, Int]): List[(Set[T], Int)] = {
-    List(
-      map
-        .groupMap(_._2)(_._1)
-        .map(_.swap)
-        .map({ case (k, v) => (Set(k.toSeq: _*).to(Set), v) })
-        .toSeq: _*
-    )
+    map
+      .groupBy { case (_, v) => v }
+      .map(_.swap)
+      .map { case (k, v) => (k.map { case (set, _) => set }.toSet, v) }
+      .toList
+      .sorted((a: (Set[T], Int), b: (Set[T], Int)) => a._2 - b._2)
   }
 }

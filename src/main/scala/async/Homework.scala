@@ -27,10 +27,15 @@ import scala.util.control.NonFatal
   * Try to test it on http://google.com!
   */
 object AsyncHomework extends App {
+  if (args.length == 0) {
+    println("No URL provided")
+    System.exit(0)
+  }
+
   private implicit val ec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
 
   (for {
-    body <- fetchPageBody("http://google.com")
+    body <- fetchPageBody(args(0))
     links <- findLinkUrls(body)
   } yield links).onComplete(links =>
     links match {
@@ -54,6 +59,7 @@ object AsyncHomework extends App {
     println("\n=== SERVERS ===\n")
     l.distinct.sorted(String.CASE_INSENSITIVE_ORDER.compare).foreach(println)
     println("\n=== END ===")
+    System.exit(0)
   }
 
   private def fetchPageBody(url: String): Future[String] = {

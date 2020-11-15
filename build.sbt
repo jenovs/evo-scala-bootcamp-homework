@@ -53,7 +53,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
   "org.mockito" %% "mockito-scala" % "1.15.0" % Test,
   "org.scalaj" %% "scalaj-http" % "2.4.2" % Test,
-  "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test
+  "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
+  "com.softwaremill.sttp.client3" %% "core" % "3.0.0-RC9",
+  "com.softwaremill.sttp.client3" %% "circe" % "3.0.0-RC9"
 )
 
 addCompilerPlugin(
